@@ -1,6 +1,6 @@
 fun runSequenciaFibonacci() {
     while (true) {
-        val numeroDesejado = solicitaNumero() ?: return
+        val numeroDesejado = solicitaNumero() ?: continue
 
         printPertenceFibonacci(numeroDesejado)
     }
@@ -11,7 +11,7 @@ private fun solicitaNumero(): Long? {
     val numeroDesejado = readln().toLongOrNull()
 
     if (numeroDesejado == null) {
-        println("Entrada inválida.")
+        println("Entrada inválida.\n")
         return null
     }
 

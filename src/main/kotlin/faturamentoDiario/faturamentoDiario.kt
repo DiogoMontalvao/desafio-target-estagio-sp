@@ -19,24 +19,6 @@ private data class FaturamentoDiario(
     val valor: Double
 )
 
-private fun mostraInformacoesFaturamento(listaFaturamentoDiario: MutableList<FaturamentoDiario>) {
-    val menorFaturamentoDiario = listaFaturamentoDiario.menorFaturamentoDiario()
-    val valorMenorFaturamento = menorFaturamentoDiario.valor
-        .toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
-
-    val maiorFaturamentoDiario = listaFaturamentoDiario.maiorFaturamentoDiario()
-    val valorMaiorFaturamento = maiorFaturamentoDiario.valor
-        .toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
-
-    val diasFaturamentoAcimaMedia = listaFaturamentoDiario.diasFaturamentoAcimaMedia()
-
-    println("Dia ${menorFaturamentoDiario.dia} teve o menor faturamento diário: R$ $valorMenorFaturamento")
-    println("Dia ${maiorFaturamentoDiario.dia} teve o maior faturamento diário: R$ $valorMaiorFaturamento")
-    println("Esse mês teve $diasFaturamentoAcimaMedia dias com o faturamento acima da média.")
-}
-
 private fun MutableList<FaturamentoDiario>.getJSONObjects() {
     val gson = Gson()
     try {
@@ -54,6 +36,24 @@ private fun MutableList<FaturamentoDiario>.getJSONObjects() {
     } catch (e: IOException) {
         e.printStackTrace()
     }
+}
+
+private fun mostraInformacoesFaturamento(listaFaturamentoDiario: MutableList<FaturamentoDiario>) {
+    val menorFaturamentoDiario = listaFaturamentoDiario.menorFaturamentoDiario()
+    val valorMenorFaturamento = menorFaturamentoDiario.valor
+        .toBigDecimal()
+        .setScale(2, RoundingMode.HALF_UP)
+
+    val maiorFaturamentoDiario = listaFaturamentoDiario.maiorFaturamentoDiario()
+    val valorMaiorFaturamento = maiorFaturamentoDiario.valor
+        .toBigDecimal()
+        .setScale(2, RoundingMode.HALF_UP)
+
+    val diasFaturamentoAcimaMedia = listaFaturamentoDiario.diasFaturamentoAcimaMedia()
+
+    println("Dia ${menorFaturamentoDiario.dia} teve o menor faturamento diário: R$ $valorMenorFaturamento")
+    println("Dia ${maiorFaturamentoDiario.dia} teve o maior faturamento diário: R$ $valorMaiorFaturamento")
+    println("Esse mês teve $diasFaturamentoAcimaMedia dias com o faturamento acima da média.")
 }
 
 private fun MutableList<FaturamentoDiario>.menorFaturamentoDiario(): FaturamentoDiario {
