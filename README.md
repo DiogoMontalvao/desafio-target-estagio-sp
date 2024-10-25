@@ -18,7 +18,7 @@ Linguagem utilizada: Kotlin
 2) Solução: https://github.com/DiogoMontalvao/desafio-target-estadio/blob/1587b218bf5a0f37205b1489b849491484e5b94b/src/main/kotlin/sequencia-fibonacci.kt
 
 ##
-3) Solução: https://github.com/DiogoMontalvao/desafio-target-estadio/blob/1587b218bf5a0f37205b1489b849491484e5b94b/src/main/kotlin/faturamentoDiario/faturamentoDiario.kt
+3) Solução: https://github.com/DiogoMontalvao/desafio-target-estagio-sp/blob/b6225c6247be44899bc0df823f789985d135bfb8/src/main/kotlin/faturamentoDiario/faturamentoDiario.kt
 
 ##
 4) Solução: https://github.com/DiogoMontalvao/desafio-target-estadio/blob/1587b218bf5a0f37205b1489b849491484e5b94b/src/main/kotlin/percentualFaturamento.kt
