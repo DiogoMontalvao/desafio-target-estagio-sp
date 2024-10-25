@@ -61,9 +61,7 @@ private fun MutableList<FaturamentoDiario>.menorFaturamentoDiario(): Faturamento
     var menorValorFaturamento = Double.MAX_VALUE
 
     for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) {
-            continue
-        }
+        if (faturamentoDiario.valor <= 0.0) continue
 
         if (faturamentoDiario.valor < menorValorFaturamento) {
             menorFaturamentoDiario = faturamentoDiario
@@ -79,9 +77,7 @@ private fun MutableList<FaturamentoDiario>.maiorFaturamentoDiario(): Faturamento
     var maiorValorFaturamento = 0.0
 
     for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) {
-            continue
-        }
+        if (faturamentoDiario.valor <= 0.0) continue
 
         if (faturamentoDiario.valor > maiorValorFaturamento) {
             maiorFaturamentoDiario = faturamentoDiario
@@ -97,12 +93,9 @@ private fun MutableList<FaturamentoDiario>.diasFaturamentoAcimaMedia(): Int {
     val mediaFaturamentoDiario = this.mediaFaturamentoDiario()
 
     for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) {
-            continue
-        }
+        if (faturamentoDiario.valor <= 0.0) continue
 
-        if (faturamentoDiario.valor > mediaFaturamentoDiario)
-            diasFaturamentoAcimaMedia++
+        if (faturamentoDiario.valor > mediaFaturamentoDiario) diasFaturamentoAcimaMedia++
     }
 
     return diasFaturamentoAcimaMedia
@@ -113,9 +106,7 @@ private fun MutableList<FaturamentoDiario>.mediaFaturamentoDiario(): Double {
     var faturamentoMensal = 0.0
 
     for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) {
-            continue
-        }
+        if (faturamentoDiario.valor <= 0.0) continue
 
         diasComFaturamento++
         faturamentoMensal += faturamentoDiario.valor
