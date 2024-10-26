@@ -5,21 +5,22 @@ import com.google.gson.JsonArray
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
+import java.math.BigDecimal
 import java.math.RoundingMode
 
-fun runFaturamentoDiario() {
-    val listaFaturamentoDiario = mutableListOf<FaturamentoDiario>()
-    listaFaturamentoDiario.getJSONObjects()
+fun runDailyRevenue() {
+    val dailyRevenueList = mutableListOf<DailyRevenue>()
+    dailyRevenueList.getJSONObjects()
 
-    mostraInformacoesFaturamento(listaFaturamentoDiario)
+    printRevenueInfo(dailyRevenueList)
 }
 
-private data class FaturamentoDiario(
-    val dia: Int,
-    val valor: Double
+private data class DailyRevenue(
+    val day: Int,
+    val value: Double
 )
 
-private fun MutableList<FaturamentoDiario>.getJSONObjects() {
+private fun MutableList<DailyRevenue>.getJSONObjects() {
     val gson = Gson()
     try {
         val JSONFile =
@@ -27,9 +28,9 @@ private fun MutableList<FaturamentoDiario>.getJSONObjects() {
         val jsonArray = gson.fromJson(JSONFile, JsonArray::class.java)
         jsonArray.forEach {
             this.add(
-                FaturamentoDiario(
-                    dia = it.asJsonObject.get("dia").asInt,
-                    valor = it.asJsonObject.get("valor").asDouble
+                DailyRevenue(
+                    day = it.asJsonObject.get("dia").asInt,
+                    value = it.asJsonObject.get("valor").asDouble
                 )
             )
         }
@@ -38,82 +39,82 @@ private fun MutableList<FaturamentoDiario>.getJSONObjects() {
     }
 }
 
-private fun mostraInformacoesFaturamento(listaFaturamentoDiario: MutableList<FaturamentoDiario>) {
-    val menorFaturamentoDiario = listaFaturamentoDiario.menorFaturamentoDiario()
-    val valorMenorFaturamento = menorFaturamentoDiario.valor
-        .toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
+private fun printRevenueInfo(dailyRevenueList: MutableList<DailyRevenue>) {
+    val minDailyRevenue = dailyRevenueList.minDailyRevenue()
+    val minValueRevenue = minDailyRevenue.value.formatValue()
 
-    val maiorFaturamentoDiario = listaFaturamentoDiario.maiorFaturamentoDiario()
-    val valorMaiorFaturamento = maiorFaturamentoDiario.valor
-        .toBigDecimal()
-        .setScale(2, RoundingMode.HALF_UP)
+    val maxDailyRevenue = dailyRevenueList.maxDailyRevenue()
+    val maxValueRevenue = maxDailyRevenue.value.formatValue()
 
-    val diasFaturamentoAcimaMedia = listaFaturamentoDiario.diasFaturamentoAcimaMedia()
+    val daysAboveAverage = dailyRevenueList.daysAboveAverage()
 
-    println("Dia ${menorFaturamentoDiario.dia} teve o menor faturamento diário: R$ $valorMenorFaturamento")
-    println("Dia ${maiorFaturamentoDiario.dia} teve o maior faturamento diário: R$ $valorMaiorFaturamento")
-    println("Esse mês teve $diasFaturamentoAcimaMedia dias com o faturamento acima da média.")
+    println("Dia ${minDailyRevenue.day} teve o menor faturamento diário: R$ $minValueRevenue")
+    println("Dia ${maxDailyRevenue.day} teve o maior faturamento diário: R$ $maxValueRevenue")
+    println("Esse mês teve $daysAboveAverage dias com o faturamento acima da média.")
 }
 
-private fun MutableList<FaturamentoDiario>.menorFaturamentoDiario(): FaturamentoDiario {
-    var menorFaturamentoDiario = this[0]
-    var menorValorFaturamento = Double.MAX_VALUE
+private fun MutableList<DailyRevenue>.minDailyRevenue(): DailyRevenue {
+    var minDailyRevenue = this[0]
+    var minValueRevenue = this[0].value
 
-    for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) continue
+    for (dailyRevenue in this) {
+        if (dailyRevenue.value <= 0.0) continue
 
-        if (faturamentoDiario.valor < menorValorFaturamento) {
-            menorFaturamentoDiario = faturamentoDiario
-            menorValorFaturamento = faturamentoDiario.valor
+        if (dailyRevenue.value < minValueRevenue) {
+            minDailyRevenue = dailyRevenue
+            minValueRevenue = dailyRevenue.value
         }
     }
 
-    return menorFaturamentoDiario
+    return minDailyRevenue
 }
 
-private fun MutableList<FaturamentoDiario>.maiorFaturamentoDiario(): FaturamentoDiario {
-    var maiorFaturamentoDiario = this[0]
-    var maiorValorFaturamento = 0.0
+private fun MutableList<DailyRevenue>.maxDailyRevenue(): DailyRevenue {
+    var maxDailyRevenue = this[0]
+    var maxValueRevenue = this[0].value
 
-    for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) continue
+    for (dailyRevenue in this) {
+        if (dailyRevenue.value <= 0.0) continue
 
-        if (faturamentoDiario.valor > maiorValorFaturamento) {
-            maiorFaturamentoDiario = faturamentoDiario
-            maiorValorFaturamento = faturamentoDiario.valor
+        if (dailyRevenue.value > maxValueRevenue) {
+            maxDailyRevenue = dailyRevenue
+            maxValueRevenue = dailyRevenue.value
         }
     }
 
-    return maiorFaturamentoDiario
+    return maxDailyRevenue
 }
 
-private fun MutableList<FaturamentoDiario>.diasFaturamentoAcimaMedia(): Int {
-    var diasFaturamentoAcimaMedia = 0
-    val mediaFaturamentoDiario = this.mediaFaturamentoDiario()
-
-    for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) continue
-
-        if (faturamentoDiario.valor > mediaFaturamentoDiario) diasFaturamentoAcimaMedia++
-    }
-
-    return diasFaturamentoAcimaMedia
+private fun Double.formatValue(): BigDecimal {
+    return this.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
 }
 
-private fun MutableList<FaturamentoDiario>.mediaFaturamentoDiario(): Double {
-    var diasComFaturamento = 0
-    var faturamentoMensal = 0.0
+private fun MutableList<DailyRevenue>.daysAboveAverage(): Int {
+    var daysAboveAverage = 0
+    val averageDailyRevenue = this.averageDailyRevenue()
 
-    for (faturamentoDiario in this) {
-        if (faturamentoDiario.valor <= 0.0) continue
+    for (dailyRevenue in this) {
+        if (dailyRevenue.value <= 0.0) continue
 
-        diasComFaturamento++
-        faturamentoMensal += faturamentoDiario.valor
+        if (dailyRevenue.value > averageDailyRevenue) daysAboveAverage++
     }
 
-    val mediaFaturamentoDiario = faturamentoMensal / diasComFaturamento
+    return daysAboveAverage
+}
 
-    return mediaFaturamentoDiario
+private fun MutableList<DailyRevenue>.averageDailyRevenue(): Double {
+    var revenueDays = 0
+    var monthlyRevenue = 0.0
+
+    for (dailyRevenue in this) {
+        if (dailyRevenue.value <= 0.0) continue
+
+        revenueDays++
+        monthlyRevenue += dailyRevenue.value
+    }
+
+    val averageDailyRevenue = monthlyRevenue / revenueDays
+
+    return averageDailyRevenue
 }
 

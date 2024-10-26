@@ -1,8 +1,8 @@
-import faturamentoDiario.runFaturamentoDiario
+import faturamentoDiario.runDailyRevenue
 
 fun main() {
-//    runSequenciaFibonacci()
-//    runFaturamentoDiario()
-//    runPercentualFaturamento()
-//    runInverteString()
+//    runFibonacciSequence()
+//    runDailyRevenue()
+//    runRevenuePercentage()
+//    runReserveString()
 }
