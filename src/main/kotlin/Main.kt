@@ -1,4 +1,4 @@
-import faturamentoDiario.runDailyRevenue
+import dailyRevenue.runDailyRevenue
 
 fun main() {
 //    runFibonacciSequence()

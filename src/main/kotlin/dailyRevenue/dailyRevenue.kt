@@ -1,4 +1,4 @@
-package faturamentoDiario
+package dailyRevenue
 
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -24,7 +24,7 @@ private fun MutableList<DailyRevenue>.getJSONObjects() {
     val gson = Gson()
     try {
         val JSONFile =
-            BufferedReader(FileReader("src/main/kotlin/faturamentoDiario/data/dados.json"))
+            BufferedReader(FileReader("src/main/kotlin/dailyRevenue/data/dados.json"))
         val jsonArray = gson.fromJson(JSONFile, JsonArray::class.java)
         jsonArray.forEach {
             this.add(
